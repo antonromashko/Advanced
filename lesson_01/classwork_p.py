@@ -1,6 +1,6 @@
 def func(string):
-    l = []
-    for s in string:
-        l.append(ord(s))
-    return tuple(l)
-print(func('sdfaf'))
+    t = tuple(ord(i) for i in string)
+    return tuple(t)
+
+
+print(func('s faf'))
