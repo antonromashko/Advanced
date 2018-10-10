@@ -19,22 +19,21 @@ class Stack:
         self.limit = limit
 
     def __str__(self):
-        """Return string like Stack<class type>"""
-        return "{} <{}>".format(type(self).__name__, self.data_type.__name__)
+        """Return string like Stack<'type'>"""
+        return "{} <{}>".format(self.__class__.__name__, self.data_type.__name__)
+
+    def _push(self, item):
+        """Check whether satisfies class arguments value
+        TypeError if item not equal to the data_type(default object)
+        Exception('LimitExceedError') if item doesn't satisfy limit value(default None)"""
+        if not isinstance(item, self.data_type):
+            raise TypeError
+        if len(self.stack) >= self.limit:
+            raise LimitExceedError('Stack limit is over!')
 
     def push(self, item):
         """Add element to stack, nothing return"""
-
-        def _push():
-            """Check whether satisfies class arguments value
-            TypeError if item not equal to the data_type(default object)
-            Exception('LimitExceedError') if item doesn't satisfy limit value(default None)"""
-            if not isinstance(item, self.data_type):
-                raise TypeError
-            if len(self.stack) >= self.limit:
-                raise LimitExceedError('Stack limit is over!')
-
-        _push()
+        self._push(item)
         self.stack.append(item)
 
     def pull(self):
