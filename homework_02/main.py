@@ -2,13 +2,15 @@ import os
 import time
 import ast
 
+
 def timing(f):
     def wrapper(arg):
         start = time.time()
         r = f(arg)
         end = time.time()
-        print(f.__name__, 'time: {}'.format(end-start))
+        print(f.__name__, 'time: {}'.format(end - start))
         return r
+
     return wrapper
 
 
