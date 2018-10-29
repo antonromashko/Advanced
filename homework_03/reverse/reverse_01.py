@@ -1,41 +1,42 @@
 import os
 
 
-def get_element(file, n_pos, qty=1, pos='left'):
+def get_element(my_txt, n_pos, qty=1, pos='left'):
     if pos == 'left':
-        file.seek(0 + n_pos)
-        return file.read(qty)
+        my_txt.seek(0 + n_pos)
+        return my_txt.read(qty)
     elif pos == 'right':
-        file.seek(-1 - n_pos, os.SEEK_END)
-        return file.read(qty)
+        my_txt.seek(0, 2)
+        my_txt.seek(my_txt.tell() - (n_pos + 1), 0)
+        return my_txt.read(qty)
     else:
         raise ValueError
 
 
-def check_sep(file, element):
-    if element == b'\r':
-        file.write(b'\n')
-    elif element == b'\n':
-        file.write(b'\r')
+def check_sep(my_txt, element):
+    if element == '\r':
+        my_txt.write('\n')
+    elif element == '\n':
+        my_txt.write('\r')
     else:
-        file.write(element)
+        my_txt.write(element)
 
 
-def write_elements(file, n_pos, left, right):
-    file.seek(0 + n_pos)
-    check_sep(file, right)
-    file.seek(-1 - n_pos, os.SEEK_END)
-    check_sep(file, left)
+def write_elements(my_txt, n_pos, left, right):
+    my_txt.seek(0 + n_pos)
+    check_sep(my_txt, right)
+    my_txt.seek(0, 2)
+    my_txt.seek(my_txt.tell() - (n_pos + 1), 0)
+    check_sep(my_txt, left)
 
 
-def my_reverse(filename):
-    with open(filename, 'rb+') as file:
-        file.seek(0, os.SEEK_END)
-        rng = file.tell()
+def my_reverse(my_file):
+    with open(my_file, 'r+', newline='\n') as my_txt:
+        my_txt.seek(0, 2)
+        rng = my_txt.tell()
         for i in range(rng // 2):
-            left = get_element(file, i, pos='left')
-            right = get_element(file, i, pos='right')
-            write_elements(file, i, left, right)
+            left = get_element(my_txt, i, pos='left')
+            right = get_element(my_txt, i, pos='right')
+            write_elements(my_txt, i, left, right)
 
 
-my_reverse('1.txt')

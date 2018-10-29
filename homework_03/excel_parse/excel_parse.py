@@ -58,8 +58,6 @@ class FileConverter:
             except DateFormatError:
                 if self.data[i] not in self.errors:
                     self.errors.append(self.data[i])
-                else:
-                    continue
 
     def check_email(self):
         valid_mail = r'^[a-zA-Z\d.]+@(?:[a-zA-Z\d]+\.){1,2}[a-zA-Z\d]+$'
@@ -67,26 +65,18 @@ class FileConverter:
             try:
                 if bool(re.match(valid_mail, self.data[i]['Email'])) is False:
                     raise EmailFormatError
-                else:
-                    continue
             except EmailFormatError:
                 if self.data[i] not in self.errors:
                     self.errors.append(self.data[i])
-                else:
-                    continue
 
     def check_username(self):
         for i in range(len(self.data)):
             try:
-                if not self.data[i]['Username'].isalpha():
+                if bool(re.match('^[a-zA-Z]+$', self.data[i]['Username'])) is False:
                     raise UserNameFormatError
-                else:
-                    continue
             except UserNameFormatError:
                 if self.data[i] not in self.errors:
                     self.errors.append(self.data[i])
-                else:
-                    continue
 
     def update_data(self):
         self.data = [item for item in self.data if item not in self.errors]
@@ -96,7 +86,7 @@ class FileConverter:
             json.dump(self.data, jf)
 
     def write_csv(self):
-        with open(self.excel_file.split('.')[0] + '.csv', 'w') as csv_file:
+        with open(self.excel_file.split('.')[0] + '.csv', 'w', encoding='utf-8') as csv_file:
             dict_writer = csv.DictWriter(csv_file, self.keys)
             dict_writer.writeheader()
             dict_writer.writerows(self.data)
@@ -128,13 +118,5 @@ obj.write_json()
 obj.write_pickle()
 obj.write_shelve()
 obj.write_errors()
-
-
-#def get_result():
-#    get_data()  # +
-#    format_date()  # +
-#    check_username()
-#    check_email()  # +
-#    update_data()  # +
-#    create_errors()
-#    write_files()
+print(obj.data)
+print(obj.errors)
