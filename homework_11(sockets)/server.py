@@ -21,7 +21,7 @@ class MultiThreaded:
     def listen_client(self, conn):
         while True:
             input_data = conn.recv(self.buffer_size).decode()
-            if input_data == '':
+            if not input_data:
                 break
             with open('text.txt', 'a') as f:
                 f.write(input_data + '\n')
