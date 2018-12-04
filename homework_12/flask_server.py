@@ -16,6 +16,7 @@ def get_list():
             abort(404)
     else:
         new_df = all_data
+    print(request.args)
     return json.dumps(new_df)
 
 

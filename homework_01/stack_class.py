@@ -55,4 +55,4 @@ class Stack:
     @property
     def type(self):
         """Return stack type"""
-        return self.data_type
+        return type(self.data_type)
